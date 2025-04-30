@@ -57,5 +57,10 @@ namespace ECommerceAPI.Data.Base
             _dbset.Remove(entity);
             await _appDbContext.SaveChangesAsync();
         }
+        public async Task RemoveRange(List<T> entities)
+        {
+            _dbset.RemoveRange(entities);
+            await _appDbContext.SaveChangesAsync();
+        }
     }
 }

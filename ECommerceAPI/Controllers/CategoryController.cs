@@ -35,26 +35,6 @@ namespace ECommerceAPI.Controllers
             }
         }
         [Authorize]
-        [HttpGet("GetAllCategoriesByUserId/{userId}")]
-        public async Task<IActionResult> GetAllCategoriesByUserId(string userId)
-        {
-            if (string.IsNullOrEmpty(userId)) return BadRequest();
-            try
-            {
-                var user = await _accountService.FindById(userId);
-                if (user == null) return NotFound();
-
-                var categories = await _categoryService.GetAllCategoriesByUserId(userId);
-                if (!categories.Any()) return NotFound();
-
-                return Ok(categories);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Message = "Something went wrong." });
-            }
-        }
-        [Authorize]
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CreateCategoryDTO model)
         {

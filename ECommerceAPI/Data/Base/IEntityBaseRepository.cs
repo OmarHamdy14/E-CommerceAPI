@@ -9,5 +9,6 @@ namespace ECommerceAPI.Data.Base
         Task Create(T entity);
         Task Update(T entity);
         Task Remove(T entity);
+        Task RemoveRange(List<T> entities);
     }
 }

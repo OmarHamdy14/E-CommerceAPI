@@ -1,4 +1,5 @@
 ﻿using ECommerceAPI.Data.DTOs.CategoryDTOs;
+using ECommerceAPI.Data.DTOs.ProductDTOs;
 using ECommerceAPI.Data.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,16 +13,18 @@ namespace ECommerceAPI.Controllers
     {
         private readonly IProductService _productService;
         private readonly IAccountService _accountService;
-        public ProductController(IProductService productService, IAccountService accountService)
+        private readonly ICategoryService _categoryService;
+        public ProductController(IProductService productService, IAccountService accountService, ICategoryService categoryService)
         {
             _productService = productService;
             _accountService = accountService;
+            _categoryService = categoryService;
         }
         [Authorize]
         [HttpGet("GetById/{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            if (id <= 0) return BadRequest();
+            //if (id <= 0) return BadRequest();
             try
             {
                 var product = await _productService.GetById(id);
@@ -35,16 +38,16 @@ namespace ECommerceAPI.Controllers
             }
         }
         [Authorize]
-        [HttpGet("GetAllCategoriesByUserId/{userId}")]
-        public async Task<IActionResult> GetAllProductsByUserId(string userId)
+        [HttpGet("GetAllProductsByCategoryId/{CategoryId}")]
+        public async Task<IActionResult> GetAllProductsByCategoryId(Guid CategoryId)
         {
-            if (string.IsNullOrEmpty(userId)) return BadRequest();
+            //if (string.IsNullOrEmpty(CategoryId)) return BadRequest();
             try
             {
-                var user = await _accountService.FindById(userId);
-                if (user == null) return NotFound();
+                var category = await _categoryService.GetById(CategoryId);
+                if (category == null) return NotFound();
 
-                var products = await _productService.GetAllProductsByUserId(userId);
+                var products = await _productService.GetAllProductsByCategoryId(CategoryId);
                 if (!products.Any()) return NotFound();
 
                 return Ok(products);
@@ -56,12 +59,12 @@ namespace ECommerceAPI.Controllers
         }
         [Authorize]
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] CreateCategoryDTO model)
+        public async Task<IActionResult> Create([FromBody] CreateProductDTO model)
         {
             try
             {
                 var product = await _productService.Create(model);
-                return CreatedAtAction("GetAllProductsByUserId", new { userId = product.UserId }, product);
+                return CreatedAtAction("GetAllProductsByCategoryId", new { CategoryId = product.CategoryId }, product);
             }
             catch (Exception ex)
             {
@@ -70,9 +73,9 @@ namespace ECommerceAPI.Controllers
         }
         [Authorize]
         [HttpPut("Update/{categoryId}")]
-        public async Task<IActionResult> Update(int productId, [FromBody] UpdateCategoryDTO model)
+        public async Task<IActionResult> Update(Guid productId, [FromBody] UpdateProductDTO model)
         {
-            if (productId <= 0) return BadRequest();
+            //if (productId <= 0) return BadRequest();
             try
             {
                 var product = await _productService.GetById(productId);
@@ -88,9 +91,9 @@ namespace ECommerceAPI.Controllers
         }
         [Authorize]
         [HttpDelete("Delete/{categoryId}")]
-        public async Task<IActionResult> Delete(int productId)
+        public async Task<IActionResult> Delete(Guid productId)
         {
-            if (productId <= 0) return BadRequest();
+            //if (productId <= 0) return BadRequest();
             try
             {
                 var product = await _productService.GetById(productId);

@@ -14,13 +14,9 @@ namespace ECommerceAPI.Data.Services.Implementation
             _base = b;
             _mapper = mapper;
         }
-        public async Task<Category> GetById(int categoryId)
+        public async Task<Category> GetById(Guid categoryId)
         {
             return await _base.Get(n => n.Id == categoryId);
-        }
-        public async Task<List<Category>> GetAllCategoriesByUserId(string userId)
-        {
-            return await _base.GetAll(n => n.UserId == userId);
         }
         public async Task<Category> Create(CreateCategoryDTO model)
         {
