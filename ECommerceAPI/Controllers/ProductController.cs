@@ -63,6 +63,8 @@ namespace ECommerceAPI.Controllers
         {
             try
             {
+                if (!ModelState.IsValid) return BadRequest();
+
                 var product = await _productService.Create(model);
                 return CreatedAtAction("GetAllProductsByCategoryId", new { CategoryId = product.CategoryId }, product);
             }
@@ -78,6 +80,7 @@ namespace ECommerceAPI.Controllers
             //if (productId <= 0) return BadRequest();
             try
             {
+                if (!ModelState.IsValid) return BadRequest();
                 var product = await _productService.GetById(productId);
                 if (product is null) return NotFound();
 

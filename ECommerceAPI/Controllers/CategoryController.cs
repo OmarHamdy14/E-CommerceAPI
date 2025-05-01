@@ -19,9 +19,9 @@ namespace ECommerceAPI.Controllers
         }
         [Authorize]
         [HttpGet("GetById/{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            if (id <= 0) return BadRequest();
+            //if (id <= 0) return BadRequest();
             try
             {
                 var category = await _categoryService.GetById(id);
@@ -40,6 +40,8 @@ namespace ECommerceAPI.Controllers
         {
             try
             {
+                if (!ModelState.IsValid) return BadRequest();
+
                 var category = await _categoryService.Create(model);
                 return CreatedAtAction("GetAllCategoriesByUserId", new { userId = category.UserId }, category);
             }
@@ -50,9 +52,9 @@ namespace ECommerceAPI.Controllers
         }
         [Authorize]
         [HttpPut("Update/{categoryId}")]
-        public async Task<IActionResult> Update(int categoryId, [FromBody] UpdateCategoryDTO model)
+        public async Task<IActionResult> Update(Guid categoryId, [FromBody] UpdateCategoryDTO model)
         {
-            if (categoryId <= 0) return BadRequest();
+            //if (categoryId <= 0) return BadRequest();
             try
             {
                 var category = await _categoryService.GetById(categoryId);
@@ -68,9 +70,9 @@ namespace ECommerceAPI.Controllers
         }
         [Authorize]
         [HttpDelete("Delete/{categoryId}")]
-        public async Task<IActionResult> Delete(int categoryId)
+        public async Task<IActionResult> Delete(Guid categoryId)
         {
-            if (categoryId <= 0) return BadRequest();
+            //if (categoryId <= 0) return BadRequest();
             try
             {
                 var category = await _categoryService.GetById(categoryId);

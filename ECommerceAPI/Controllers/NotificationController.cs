@@ -75,6 +75,8 @@ namespace ECommerceAPI.Controllers
             //if (NotificationId <= 0) return BadRequest();
             try
             {
+                if (!ModelState.IsValid) return BadRequest();
+
                 var Notification = await _NotificationService.GetById(NotificationId);
                 if (Notification is null) return NotFound();
 
