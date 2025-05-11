@@ -1,5 +1,6 @@
 ﻿using ECommerceAPI.Data.DTOs.CategoryDTOs;
 using ECommerceAPI.Data.DTOs.ProductDTOs;
+using ECommerceAPI.Data.DTOs.ProductImageDTOs;
 using ECommerceAPI.Data.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,11 +15,13 @@ namespace ECommerceAPI.Controllers
         private readonly IProductService _productService;
         private readonly IAccountService _accountService;
         private readonly ICategoryService _categoryService;
-        public ProductController(IProductService productService, IAccountService accountService, ICategoryService categoryService)
+        private readonly IProductImageService _productImageService; 
+        public ProductController(IProductService productService, IAccountService accountService, ICategoryService categoryService, IProductImageService productImageService)
         {
             _productService = productService;
             _accountService = accountService;
             _categoryService = categoryService;
+            _productImageService = productImageService;
         }
         [Authorize]
         [HttpGet("GetById/{id}")]
@@ -86,6 +89,21 @@ namespace ECommerceAPI.Controllers
 
                 await _productService.Update(product, model);
                 return Ok(new { Message = "Update is succeeded.", Product = product });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Something went wrong." });
+            }
+        }
+        [Authorize]
+        [HttpPut("UploadImages")]
+        public async Task<IActionResult> UploadImages([FromBody]ProductImageDTO model)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return BadRequest();
+                await _productImageService.Upload(model);
+                return Ok();
             }
             catch (Exception ex)
             {

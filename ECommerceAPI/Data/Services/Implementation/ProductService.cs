@@ -9,11 +9,15 @@ namespace ECommerceAPI.Data.Services.Implementation
     public class ProductService : IProductService
     {
         private readonly IEntityBaseRepository<Product> _base;
+        private readonly IEntityBaseRepository<ProductImage> _baseProductImage;
         private readonly IMapper _mapper;
-        public ProductService(IEntityBaseRepository<Product> b, IMapper mapper)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductService(IEntityBaseRepository<Product> b, IMapper mapper, IWebHostEnvironment webHostEnvironment, IEntityBaseRepository<ProductImage> baseProductImage)
         {
             _base = b;
             _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
+            _baseProductImage = baseProductImage;
         }
         public async Task<Product> GetById(Guid ProductId)
         {
@@ -26,7 +30,7 @@ namespace ECommerceAPI.Data.Services.Implementation
         public async Task<Product> Create(CreateProductDTO model)
         {
             var product = _mapper.Map<Product>(model);
-            product.CreatedAt = DateTime.UtcNow;
+            product.CreatedDate = DateTime.UtcNow;
             await _base.Create(product);
             return product;
         }

@@ -7,7 +7,7 @@ namespace ECommerceAPI.Data.Services.Interface
     {
         Task<List<CartItem>> GetAllCartItemsByUserId(string userId);
         Task<bool> AddToCart(CreateCartItemDTO model);
-        Task DeleteCartItem(Guid CartItemId)
+        Task DeleteCartItem(Guid CartItemId);
         Task ClearCart(string UserId);
     }
 }
