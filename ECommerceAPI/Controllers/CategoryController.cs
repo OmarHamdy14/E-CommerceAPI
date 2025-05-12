@@ -43,7 +43,7 @@ namespace ECommerceAPI.Controllers
                 if (!ModelState.IsValid) return BadRequest();
 
                 var category = await _categoryService.Create(model);
-                return CreatedAtAction("GetAllCategoriesByUserId", new { userId = category.UserId }, category);
+                return Ok();
             }
             catch (Exception ex)
             {

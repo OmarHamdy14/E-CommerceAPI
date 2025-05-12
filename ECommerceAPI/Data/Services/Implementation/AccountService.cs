@@ -1,8 +1,12 @@
 ﻿using ECommerceAPI.Data.DTOs.AccountDTOs;
 using ECommerceAPI.Data.Services.Interface;
+using ECommerceAPI.Helpers;
 using ECommerceAPI.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
@@ -38,7 +42,7 @@ namespace ECommerceAPI.Data.Services.Implementation
         public async Task<AuthModel> Register(RegisterUserDTO model)
         {
             if (await FindByEmail(model.Email) is not null) return new AuthModel() { Message = "Email is already registered." };
-            if (await FindByUserName(model.UserName) is not null) return new AuthModel() { Message = "User Name is already registered." };
+            //if (await FindByUserName(model.UserName) is not null) return new AuthModel() { Message = "User Name is already registered." };
             var user = _mapper.Map<ApplicationUser>(model);
             var res = await _userManager.CreateAsync(user);
             if (res.Succeeded) return new AuthModel() { Message = "Registration is Succeeded.", IsAuthenticated = true };
@@ -46,7 +50,8 @@ namespace ECommerceAPI.Data.Services.Implementation
         }
         public async Task<AuthModel> GetTokenAsync(LogInDTO model)
         {
-            var user = await FindByUserName(model.UserName);
+            //var user = await FindByUserName(model.UserName);
+            var user = await FindByEmail(model.Email);
             if (user == null) return new AuthModel() { Message = "Invalid User Name." };
             var PassCheck = await _userManager.CheckPasswordAsync(user, model.Password);
             if (!PassCheck) return new AuthModel() { Message = "Invalid Password." };
@@ -64,20 +69,20 @@ namespace ECommerceAPI.Data.Services.Implementation
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Name,user.UserName),
+                //new Claim(JwtRegisteredClaimNames.Name,user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email,user.Email),
                 new Claim("User_ID",user.Id)
             }.Union(userClaims).Union(roleCalims);
 
-            var SymmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
-            var SigningCredentials = new SigningCredentials(SymmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
+            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
             var JwtSecurityToken = new JwtSecurityToken(
                 issuer: _jwt.Issuer,
                 audience: _jwt.Audience,
                 expires: DateTime.UtcNow.AddHours(_jwt.DurationInHours),
-                signingCredentials: SigningCredentials,
+                signingCredentials: signingCredentials,
                 claims: claims
             );
             return JwtSecurityToken;

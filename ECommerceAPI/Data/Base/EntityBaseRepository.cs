@@ -31,10 +31,10 @@ namespace ECommerceAPI.Data.Base
 
             return await query.FirstOrDefaultAsync();
         }
-        public async Task<List<T>> GetAll(Expression<Func<T, bool>>? filter, string? IncludeProperties = null)
+        public async Task<List<T>> GetAll(Expression<Func<T, bool>>? filter = null, string? IncludeProperties = null)
         {
             IQueryable<T> query = _dbset;
-            query = query.Where(filter);
+            if(filter != null) query = query.Where(filter);
 
             foreach (var property in IncludeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {

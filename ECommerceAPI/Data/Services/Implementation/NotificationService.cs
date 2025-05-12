@@ -24,7 +24,7 @@ namespace ECommerceAPI.Data.Services.Implementation
         public async Task<Notification> Create(CreateNotificationDTO model)
         {
             var Notification = _mapper.Map<Notification>(model);
-            Notification.CreatedAt = DateTime.UtcNow;
+            Notification.SentAt = DateTime.UtcNow;
             await _base.Create(Notification);
             return Notification;
         }

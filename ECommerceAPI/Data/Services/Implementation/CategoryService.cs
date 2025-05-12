@@ -25,7 +25,7 @@ namespace ECommerceAPI.Data.Services.Implementation
         public async Task<Category> Create(CreateCategoryDTO model)
         {
             var category = _mapper.Map<Category>(model);
-            category.CreatedAt = DateTime.UtcNow;
+            //category.CreatedAt = DateTime.UtcNow;
             await _base.Create(category);
             return category;
         }
