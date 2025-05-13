@@ -1,4 +1,6 @@
-﻿namespace ECommerceAPI.Models
+﻿using ECommerceAPI.Helpers.Enums;
+
+namespace ECommerceAPI.Models
 {
     public class Shipment
     {
@@ -6,6 +8,8 @@
         public Guid OrderId { get; set; }
         public string TrackingNumber { get; set; }
         public string Carrier { get; set; }
-        // ShipmentStatus??
+        public DateTime CreatedAt { get; set; }
+        public ShipmentStatus Staus { get; set; }
+        public Order Order { get; set; }
     }
 }

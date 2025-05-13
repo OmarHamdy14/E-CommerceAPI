@@ -22,6 +22,7 @@ namespace ECommerceAPI.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
-        // shipment - payment
+        public DbSet<Shipment> Shipments { get; set; }
+        public DbSet<Payment> Payments { get; set; }
     }
 }

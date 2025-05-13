@@ -1,10 +1,11 @@
 ﻿using ECommerceAPI.Data.Base;
 using ECommerceAPI.Data.DTOs.OrderDTOs;
+using ECommerceAPI.Data.Services.Interface;
 using ECommerceAPI.Models;
 
 namespace ECommerceAPI.Data.Services.Implementation
 {
-    public class OrderService
+    public class OrderService : IOrderService
     {
         private readonly IEntityBaseRepository<Order> _base;
         private readonly IEntityBaseRepository<CartItem> _baseCartItem;

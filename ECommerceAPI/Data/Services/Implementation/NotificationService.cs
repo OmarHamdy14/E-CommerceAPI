@@ -1,10 +1,11 @@
 ﻿using ECommerceAPI.Data.Base;
 using ECommerceAPI.Data.DTOs.NotificationDTOs;
+using ECommerceAPI.Data.Services.Interface;
 using ECommerceAPI.Models;
 
 namespace ECommerceAPI.Data.Services.Implementation
 {
-    public class NotificationService
+    public class NotificationService : INotificationService
     {
         private readonly IEntityBaseRepository<Notification> _base;
         private readonly IMapper _mapper;
