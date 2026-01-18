@@ -1,6 +1,6 @@
-﻿namespace ECommerceAPI.Cloudinary
+﻿namespace ECommerceAPI.CloudinaryConfigs
 {
-    public class UploadResponse
+    public class CloudinaryUploadResponse
     {
         public string Url { get; set; }
         public string PublicId { get; set; }

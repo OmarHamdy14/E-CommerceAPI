@@ -1,6 +1,6 @@
-﻿namespace ECommerceAPI.Cloudinary
+﻿namespace ECommerceAPI.CloudinaryConfigs
 {
-    public class DeleteResponse
+    public class CloudinaryDeleteResponse
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; }

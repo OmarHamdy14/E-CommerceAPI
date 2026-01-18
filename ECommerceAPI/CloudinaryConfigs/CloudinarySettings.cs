@@ -1,4 +1,4 @@
-﻿namespace ECommerceAPI.Cloudinary
+﻿namespace ECommerceAPI.CloudinaryConfigs
 {
     public class CloudinarySettings
     {
