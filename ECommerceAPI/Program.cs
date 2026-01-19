@@ -1,3 +1,4 @@
+using ECommerceAPI.CloudinaryConfigs;
 using ECommerceAPI.Data.Base;
 using ECommerceAPI.Data.Services.Implementation;
 using ECommerceAPI.Data.Services.Interface;
@@ -41,6 +42,7 @@ namespace ECommerceAPI
             builder.Services.AddAutoMapper(typeof(Program));
 
             builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
+            builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("Cloudinary"));
 
             builder.Services.AddAuthentication(op =>
             {
